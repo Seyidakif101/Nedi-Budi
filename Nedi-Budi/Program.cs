@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Nedi_Budi.Context;
+using Nedi_Budi.Models;
+
 namespace Nedi_Budi
 {
     public class Program
@@ -7,6 +12,14 @@ namespace Nedi_Budi
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+            });
+            builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
+            {
+
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             var app = builder.Build();
 
