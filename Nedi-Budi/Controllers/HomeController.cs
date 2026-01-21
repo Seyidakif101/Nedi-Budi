@@ -1,13 +1,23 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Nedi_Budi.Context;
+using Nedi_Budi.ViewModels.EmployeeViewModels;
+using System.Diagnostics;
 
 namespace Nedi_Budi.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(AppDbContext _context) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var employyes = await _context.Employees.Select(x => new EmployeeGetVM()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ImagePath = x.ImagePath,
+                CategoryName = x.Category.Name
+            }).ToListAsync();
+            return View(employyes);
         }
 
     }

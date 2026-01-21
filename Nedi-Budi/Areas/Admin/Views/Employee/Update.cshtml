@@ -1,0 +1,30 @@
+﻿@model EmployeeUpdateVM
+<br />
+<br />
+<div class="container">
+    <div class="row">
+
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name">Name</label>
+                <input asp-for="Name" placeholder="Enter Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Image">Image</label>
+                <input asp-for="Image" placeholder="Image">
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId">Category</label>
+                <select asp-for="CategoryId" asp-items="@ViewBag.Categories" class="form-select"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+
+
+    </div>
+</div>

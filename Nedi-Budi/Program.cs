@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Nedi_Budi.Context;
+using Nedi_Budi.Helper;
 using Nedi_Budi.Models;
+using System.Threading.Tasks;
 
 namespace Nedi_Budi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<DbContextRole>();
             builder.Services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -22,7 +25,9 @@ namespace Nedi_Budi
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             var app = builder.Build();
-
+            var scope = app.Services.CreateScope();
+            var contextRole = scope.ServiceProvider.GetRequiredService<DbContextRole>();
+            await contextRole.RoleDatabase();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
